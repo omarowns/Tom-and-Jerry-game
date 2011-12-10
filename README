@@ -2,3 +2,5 @@ The game consists of a file ended with .DAT
 The first line is the grid
 The second is the coordinates of Tom and Jerry (X,Y) respectively
 From the third line forward, each pair is a set of coordinates (X,Y) representing Upper Left Corner and Lower Right Corner of the obstacles.
+
+The root folder (Tom-and-Jerry-game) opens as a NetBeans project, possibly with the name "prFinal".
