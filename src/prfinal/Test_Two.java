@@ -5,17 +5,15 @@
 package prfinal;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  *
  * @author Omar
  */
 public class Test_Two extends mainTest{
+    
+    LinkedList<Vertex> path;
 
      public void main(String dir, String filename){ //Arg is the input file
         file = new File(dir + "\\" + filename);
@@ -33,14 +31,20 @@ public class Test_Two extends mainTest{
         }catch (ErrorFound ef){
             ef.getStackTrace();
         }finally{
-            output(dir, filename);
+            output(dir,filename);
         }
     }
     
     @Override
     void generateFile(String dir, String filename) {
-        create();
-        doGraph();
+        try {
+            doGraph();
+        } catch(GraphNoDrawable ex) {
+            ex.getStackTrace();
+        }finally{
+            outputGraph(dir,filename);
+        }
+        
 
     } //Here the method will call other methods to create the nodes and do the shortest path thingy
     

@@ -26,12 +26,14 @@ public abstract class mainTest {
     private Vertex[][] matrix = null;
     private List<Vertex> nodes = new ArrayList<Vertex>();
     private List<Edge> edges = new ArrayList<Edge>(); 
+        private LinkedList<Vertex> path;
     
     
     public int _error = -1;
     public int sizeX,sizeY;
     public int tomX,tomY,jerryX,jerryY;
     public ArrayList<Obstacles> obstacles = new ArrayList<Obstacles>();
+
             public class Obstacles{
                 public int getLowerRightX() {
                     return lowerRightX;
@@ -235,13 +237,25 @@ public abstract class mainTest {
         }
         return flag;
     }
-
+    
+    
+    
+    
     public void output(String dir, String filename) {
         if( _error != -1 ){
             generateErrorFile(dir,filename);
         }
         else{
             generateFile(dir,filename);
+        }
+    }
+    
+    public void outputGraph(String dir, String filename){
+        if( path == null){
+            generateUnreachableFile(dir,filename);
+        }
+        else{
+            generateReachableFile(dir,filename);
         }
     }
 
@@ -258,8 +272,40 @@ public abstract class mainTest {
                     ioex.getStackTrace();
                 }
             }
+            
+                public void generateUnreachableFile(String dir, String filename){
+                try{
+                    String res = "RES";
+                    filename = filename.replaceAll("DAT",res);                    
+                    FileOutputStream fos = new FileOutputStream(dir + "\\" + filename);
+                    PrintStream ps = new PrintStream(fos);
+                    ps.println("INALCANZABLE");
+                    fos.close();
+                    drawUnreachableGraph(path);
+                    runErrorDialog(dir, filename);
+                }catch(IOException ioex){
+                    ioex.getStackTrace();
+                }
+            }
 
             abstract void generateFile(String dir, String filename);
+                
+                public void generateReachableFile(String dir, String filename){
+                    try{
+                        String res = "RES";
+                        filename = filename.replaceAll("DAT", res);                    
+                        FileOutputStream fos = new FileOutputStream(dir + "\\" + filename);
+                        PrintStream ps = new PrintStream(fos);
+                        for (Vertex vertex : path) {
+                            ps.println( (vertex.getCoordX() +1) + " " + (vertex.getCoordY() +1) );
+                        }
+                        drawReachableGraph(path);
+                        runSuccessDialog(dir, filename);
+                    }catch(IOException ex){
+                        ex.getStackTrace();
+                    }
+                }
+            
 
     public void stackCharMatrix(char[][] matrix) {
         for(int i=0; i<sizeX; i++)
@@ -398,40 +444,66 @@ public abstract class mainTest {
         }
     }
     
-    public void doGraph(){
+    public LinkedList doGraph() throws GraphNoDrawable{
+        create();
         Graph graph = new Graph(nodes, edges);
 	DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
 	dijkstra.execute(searchTom());
-	LinkedList<Vertex> path = dijkstra.getPath(searchJerry());
-
-        for (Vertex vertex : path) {
-            System.out.print(vertex); System.out.println(": " + vertex.getCoordX() + " " + vertex.getCoordY());
-	}
+	path = dijkstra.getPath(searchJerry());
+        
+        if(path == null){
+            throw new GraphNoDrawable();
+        }
+        else {
+            for (Vertex vertex : path) {
+                System.out.print(vertex); System.out.println(": " + vertex.getCoordX() + " " + vertex.getCoordY());
+            }
+            return path;
+        }
 
     }
     
-    private Vertex searchTom() {
-        Vertex ret = null;
-        for(Vertex v : nodes){
-            if(v.getCoordX() == tomX && v.getCoordY() == tomY){
-                ret = v;
-                break;
+            private Vertex searchTom() {
+                Vertex ret = null;
+                for(Vertex v : nodes){
+                    if(v.getCoordX() == tomX && v.getCoordY() == tomY){
+                        ret = v;
+                        break;
+                    }
+                    else
+                        continue;
+                }
+                return ret;
             }
-            else
-                continue;
-        }
-        return ret;
+
+            private Vertex searchJerry() {
+                Vertex ret = null;
+                for(Vertex v : nodes){
+                    if(v.getCoordX() == jerryX && v.getCoordY() == jerryY){
+                        ret = v;
+                    }
+                    else
+                        continue;
+                }
+                return ret;
+            }
+            
+    private void drawUnreachableGraph(LinkedList path) {
+        jUnreachableGraph jg = new jUnreachableGraph();
+        jg.setSizeX(sizeX); jg.setSizeY(sizeY);
+        jg.setTomX(tomX); jg.setTomY(tomY);
+        jg.setJerryX(jerryX); jg.setJerryY(jerryY);
+        jg.setObstacles(obstacles); jg.setPath(path);
+        jg.init();
+        
     }
-    
-    private Vertex searchJerry() {
-        Vertex ret = null;
-        for(Vertex v : nodes){
-            if(v.getCoordX() == jerryX && v.getCoordY() == jerryY){
-                ret = v;
-            }
-            else
-                continue;
-        }
-        return ret;
+
+    private void drawReachableGraph(LinkedList<Vertex> path) {
+        jReachableGraph jg = new jReachableGraph();
+        jg.setSizeX(sizeX); jg.setSizeY(sizeY);
+        jg.setTomX(tomX); jg.setTomY(tomY);
+        jg.setJerryX(jerryX); jg.setJerryY(jerryY);
+        jg.setObstacles(obstacles); jg.setPath(path);
+        jg.init();
     }
 }
