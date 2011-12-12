@@ -4,3 +4,10 @@ The second is the coordinates of Tom and Jerry (X,Y) respectively
 From the third line forward, each pair is a set of coordinates (X,Y) representing Upper Left Corner and Lower Right Corner of the obstacles.
 
 The root folder (Tom-and-Jerry-game) opens as a NetBeans project, possibly with the name "prFinal".
+
+The project updated on 12/12/2011 to it's ALPHA version. This means (at least to me) that the project is finished
+and working on almost all of it's features.
+  -> Test 1 works ok since a week ago.
+  -> Test 2 works ok since last update:
+      - Dijkstra's Algorithm to find the shortest path works
+      - There is a graphical visualization of Tom, Jerry, the obstacles (if any) and the shortest path (if any)
