@@ -83,7 +83,7 @@ public class mainWindow extends JFrame{
     }
     
     public void run(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE); //Y U NO CLOSE CORRECTLY???!!!
         pack();
         //this.setSize(230,200);
         this.setMinimumSize(this.getSize());
@@ -167,6 +167,7 @@ public class mainWindow extends JFrame{
         JFileChooser c = new JFileChooser();
         FileFilter DATfilter = new DATfilter("DAT Files", ".DAT");
         c.setFileFilter(DATfilter);
+        c.setCurrentDirectory(new File(new File("").getAbsolutePath()));
           // Demonstrate "Open" dialog:
           int rVal = c.showOpenDialog(c);
           if (rVal == JFileChooser.APPROVE_OPTION) {
@@ -174,7 +175,8 @@ public class mainWindow extends JFrame{
             dir = c.getCurrentDirectory().toString();
           }
           if (rVal == JFileChooser.CANCEL_OPTION) {
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setVisible(false);
+              //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
           }
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
