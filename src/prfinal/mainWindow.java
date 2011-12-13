@@ -2,6 +2,7 @@ package prfinal;
 
 /* * IMPORTS * */
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -20,6 +21,7 @@ public class mainWindow extends JFrame{
         private JMenuItem _help;
         private JMenuItem about;
     private JLabel fileName;
+        private Icon image;
     private JButton test1;
     private JButton test2;
     
@@ -29,7 +31,11 @@ public class mainWindow extends JFrame{
         this.setLayout(new BorderLayout());
         TheHandler handler = new TheHandler();
         ButtonHandler buttonHandler = new ButtonHandler();
+        
         JPanel p = new JPanel();
+        JPanel p1 = new JPanel();
+            p1.setLayout(new BorderLayout());
+            
         menuBar = new JMenuBar();
         file = new JMenu("File");
             open = new JMenuItem("Open");
@@ -37,7 +43,11 @@ public class mainWindow extends JFrame{
         help = new JMenu("Help");
             _help = new JMenuItem("Guide");
             about = new JMenuItem("About");
+            
         fileName = new JLabel("No file chosen D:", JLabel.CENTER);
+            image = new ImageIcon(getClass().getResource("/prfinal/res/images/title.png"));
+            JLabel icon = new JLabel("");
+            icon.setIcon(image);
         test1 = new JButton("Test 1");
         test2 = new JButton("Test 2");
         
@@ -53,9 +63,12 @@ public class mainWindow extends JFrame{
         menuBar.add(help);
         this.setJMenuBar(menuBar);
         
-        this.add(fileName, BorderLayout.NORTH);
+        p1.add(icon, BorderLayout.NORTH);
+        p1.add(fileName, BorderLayout.SOUTH);
         p.add(test1);
         p.add(test2);
+        this.add(p1, BorderLayout.NORTH);
+        this.add(p, BorderLayout.SOUTH);
         
         open.addActionListener(handler);
         exit.addActionListener(handler);
@@ -71,7 +84,8 @@ public class mainWindow extends JFrame{
     
     public void run(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(170,120);
+        pack();
+        //this.setSize(230,200);
         this.setMinimumSize(this.getSize());
         this.setVisible(true);
     }
