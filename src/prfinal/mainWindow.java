@@ -177,7 +177,10 @@ public class mainWindow extends JFrame{
           if (rVal == JFileChooser.CANCEL_OPTION) {
             setVisible(false);
           }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 845976de5621edd342d58a19db737ee8d6e355a6
     }
     class DATfilter extends FileFilter{
         private String description;
