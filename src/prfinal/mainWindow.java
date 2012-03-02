@@ -176,12 +176,8 @@ public class mainWindow extends JFrame{
           }
           if (rVal == JFileChooser.CANCEL_OPTION) {
             setVisible(false);
-              //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
           }
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        pack();
-        setVisible(true);
     }
     class DATfilter extends FileFilter{
         private String description;
